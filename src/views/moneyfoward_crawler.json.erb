@@ -1,0 +1,22 @@
+[
+  {
+    "color": "good",
+    "pretext": "MoneyForwardの取得結果です",
+    "fields": [
+      {
+        "title": "収入",
+        "value": "<%= @result[:income] %>",
+        "short": true
+      },
+      {
+        "title": "支出",
+        "value": "<%= @result[:expenses] %>",
+        "short": true
+      },
+      {
+        "title": "収支",
+        "value": "<%= @result[:balance] %>"
+      }
+    ]
+  }
+]
