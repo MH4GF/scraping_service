@@ -1,4 +1,3 @@
-require 'bundler/setup'
 require 'mechanize'
 require 'erb'
 require_relative './slack_app'
@@ -7,12 +6,21 @@ class Crawler
   attr_reader :agent, :url, :page
   USER_AGENT = 'Mac Safari'.freeze
 
+  # lambda handler
+  def self.handler(event:, context:)
+    new.post_result
+  end
+
   def initialize(url = nil)
     @agent = Mechanize.new
     agent.user_agent = USER_AGENT
     agent.log = Logger.new($stderr)
     @url = url
     @page = sign_in_page || agent.get(url)
+  end
+
+  def post_result
+    p 'need override'
   end
 
   private
@@ -65,7 +73,7 @@ class MoneyForwardCrawler < Crawler
 
   def attachments_result
     @result = result
-    erb = ERB.new(File.read('./src/views/moneyfoward_crawler.json.erb'))
+    erb = ERB.new(File.read('./views/moneyfoward_crawler.json.erb'))
     erb.result(binding)
   end
 end
