@@ -2,43 +2,24 @@ require 'mechanize'
 require 'erb'
 require_relative './slack_app'
 
-class Crawler
-  attr_reader :agent, :url, :page
+class MoneyForwardCrawler
+  attr_reader :agent, :page
   USER_AGENT = 'Mac Safari'.freeze
-
-  # lambda handler
-  def self.handler(event:, context:)
-    new.post_result
-  end
-
-  def initialize(url = nil)
-    @agent = Mechanize.new
-    agent.user_agent = USER_AGENT
-    agent.log = Logger.new($stderr)
-    @url = url
-    @page = sign_in_page || agent.get(url)
-  end
-
-  def post_result
-    p 'need override'
-  end
-
-  private
-
-  # need override
-  def sign_in_page
-    false
-  end
-end
-
-class MoneyForwardCrawler < Crawler
   SESSION_URL = 'https://moneyforward.com/users/sign_in'.freeze
   SIGN_IN_EMAIL_FIELD = 'sign_in_session_service[email]'.freeze
   SIGN_IN_PASS_FIELD = 'sign_in_session_service[password]'.freeze
   SEARCH_DOM_TARGET = '#monthly_total_table_home tbody tr td'.freeze
 
-  def initialize(url = SESSION_URL)
-    super
+  # AWS lambda handler
+  def self.handler(event:, context:)
+    new.post_result
+  end
+
+  def initialize
+    @agent = Mechanize.new
+    agent.user_agent = USER_AGENT
+    agent.log = Logger.new($stderr)
+    @page = sign_in_page
   end
 
   def post_result
@@ -53,27 +34,28 @@ class MoneyForwardCrawler < Crawler
   private
 
   def sign_in_page
-    login_page = agent.get(url)
+    login_page = agent.get(SESSION_URL)
     form = login_page.forms[0]
     form.field_with(name: SIGN_IN_EMAIL_FIELD).value = ENV['SIGN_IN_EMAIL']
     form.field_with(name: SIGN_IN_PASS_FIELD).value = ENV['SIGN_IN_PASSWORD']
     agent.submit(form)
   end
 
-  def result
-    table = page.search(SEARCH_DOM_TARGET)
-    @result ||= {
-      income: table[0].children.text,
-      expenses: table[1].children.text,
-      balance: table[2].children.text
-    }
-
-    @result
-  end
-
   def attachments_result
-    @result = result
+    @result ||= select_result(crawl)
     erb = ERB.new(File.read('./views/moneyfoward_crawler.json.erb'))
     erb.result(binding)
+  end
+
+  def select_result(crawled)
+    {
+        income: crawled[0].children.text,
+        expenses: crawled[1].children.text,
+        balance: crawled[2].children.text
+    }
+  end
+
+  def crawl
+    page.search(SEARCH_DOM_TARGET)
   end
 end
