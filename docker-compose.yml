@@ -1,0 +1,13 @@
+version: '3'
+volumes:
+  bundle:
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - bundle:/usr/local/bundle
+      - ./src:/usr/local/app:delegated
+    stdin_open: true
+    tty: true
