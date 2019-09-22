@@ -1,5 +1,6 @@
 require 'json'
 require 'rest-client'
+require_relative './credentials'
 
 class SlackApp
   attr_reader :header, :channel_code, :attachments
@@ -8,7 +9,7 @@ class SlackApp
   def initialize(channel_code: '', attachments: [])
     @header = {
       content_type: 'application/json; charset=utf-8',
-      Authorization: "Bearer #{ENV['SLACK_APP_TOKEN']}"
+      Authorization: "Bearer #{Credentials.decrypted['slack_app_token']}"
     }
     @channel_code = channel_code
     @attachments = attachments

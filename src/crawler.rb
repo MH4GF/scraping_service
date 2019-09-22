@@ -1,6 +1,7 @@
 require 'mechanize'
 require 'erb'
 require_relative './slack_app'
+require_relative './credentials'
 
 class MoneyForwardCrawler
   attr_reader :agent, :page
@@ -24,7 +25,7 @@ class MoneyForwardCrawler
 
   def post_result
     slack_app = SlackApp.new(
-      channel_code: ENV['CHANNEL_CODE'],
+      channel_code: Credentials.decrypted['slack_channel_code'],
       attachments: attachments_result
     )
 
@@ -36,8 +37,8 @@ class MoneyForwardCrawler
   def sign_in_page
     login_page = agent.get(SESSION_URL)
     form = login_page.forms[0]
-    form.field_with(name: SIGN_IN_EMAIL_FIELD).value = ENV['SIGN_IN_EMAIL']
-    form.field_with(name: SIGN_IN_PASS_FIELD).value = ENV['SIGN_IN_PASSWORD']
+    form.field_with(name: SIGN_IN_EMAIL_FIELD).value = Credentials.decrypted['sign_in_email']
+    form.field_with(name: SIGN_IN_PASS_FIELD).value = Credentials.decrypted['sign_in_password']
     agent.submit(form)
   end
 
