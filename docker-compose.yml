@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - bundle:/usr/local/bundle
+      - ~/.aws:/root/.aws
       - ./src:/usr/local/app:delegated
     stdin_open: true
     tty: true
