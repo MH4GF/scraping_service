@@ -4,8 +4,8 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
+gem 'aws-sdk-kms'
 gem 'mechanize'
 gem 'rest-client'
-gem 'yaml_vault'
-gem 'aws-sdk-kms'
 gem 'rubocop'
+gem 'yaml_vault'

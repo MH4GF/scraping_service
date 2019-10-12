@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'mechanize'
 require 'erb'
 
 class Crawler
   attr_reader :agent, :target_page, :crawl_params
-  USER_AGENT = 'Mac Safari'.freeze
+  USER_AGENT = 'Mac Safari'
 
   def initialize(target)
     @agent = Mechanize.new
@@ -19,6 +21,8 @@ class Crawler
 
   private
 
+  # TODO
+  # rubocop:disable Metrics/AbcSize
   def sign_in_page
     sign_in_page = agent.get(crawl_params[:target_url])
     form = sign_in_page.forms[crawl_params[:sign_in_form_number]]
@@ -26,4 +30,5 @@ class Crawler
     form.field_with(name: crawl_params[:sign_in_password_field]).value = crawl_params[:sign_in_password]
     agent.submit(form)
   end
+  # rubocop:enable Metrics/AbcSize
 end

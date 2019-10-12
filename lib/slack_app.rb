@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'rest-client'
 require_relative './credentials'
 
 class SlackApp
   attr_reader :header, :channel_code, :attachments
-  POST_MESSAGE_URL = 'https://slack.com/api/chat.postMessage'.freeze
+  POST_MESSAGE_URL = 'https://slack.com/api/chat.postMessage'
 
   def initialize(channel_code: '', attachments: [])
     @header = {
