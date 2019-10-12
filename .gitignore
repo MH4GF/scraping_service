@@ -2,3 +2,4 @@ vendor/**
 packaged-template.yaml
 secrets.yml
 .DS_Store
+*/.terraform
