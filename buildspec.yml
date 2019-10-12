@@ -1,0 +1,19 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      ruby: 2.6
+  build:
+    commands:
+      - bundle install --deployment
+      - |
+        sam package \
+          --template-file template.yml \
+          --output-template-file packaged-template.yml \
+          --s3-bucket ${BUCKET_NAME}
+      - |
+        sam deploy \
+          --template-file packaged-template.yml \
+          --stack-name ort-scraping-service \
+          --capabilities CAPABILITY_IAM \
+          --no-fail-on-empty-changeset

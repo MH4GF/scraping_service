@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require_relative './target'
-require_relative '../lib/crawler'
-require_relative '../lib/slack_app'
-require_relative '../lib/credentials'
+require_relative './lib/crawler'
+require_relative './lib/slack_app'
+require_relative './lib/credentials'
 
 class MoneyForward < Target
   def execute
@@ -41,7 +41,7 @@ class MoneyForward < Target
 
   def attachments_result
     @result ||= select_result(crawler.crawl)
-    erb = ERB.new(File.read('./scrapings/views/money_forward.json.erb'))
+    erb = ERB.new(File.read('./views/money_forward.json.erb'))
     erb.result(binding)
   end
 
