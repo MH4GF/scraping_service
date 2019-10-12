@@ -7,8 +7,8 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - bundle:/usr/local/bundle
+      - bundle:/usr/local/app/vendor/bundle
       - ~/.aws:/root/.aws
-      - ./src:/usr/local/app:delegated
+      - .:/usr/local/app:delegated
     stdin_open: true
     tty: true

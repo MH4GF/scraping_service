@@ -1,4 +1,4 @@
-*/vendor/**
+vendor/**
 packaged-template.yaml
-src/secrets.yml
+secrets.yml
 .DS_Store

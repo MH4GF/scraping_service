@@ -1,7 +1,7 @@
 require_relative './target'
-require_relative './../lib/crawler'
-require_relative './../lib/slack_app'
-require_relative './../lib/credentials'
+require_relative '../lib/crawler'
+require_relative '../lib/slack_app'
+require_relative '../lib/credentials'
 
 class MoneyForward < Target
   def execute
