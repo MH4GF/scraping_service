@@ -53,7 +53,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
     parallel (1.19.1)
-    parser (2.6.5.0)
+    parser (2.7.0.1)
       ast (~> 2.4.0)
     rainbow (3.0.0)
     rest-client (2.1.0)
