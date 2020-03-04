@@ -81,7 +81,7 @@ GEM
     yaml_vault (1.1.3)
       activesupport (>= 4)
       thor
-    zeitwerk (2.2.2)
+    zeitwerk (2.3.0)
 
 PLATFORMS
   ruby
