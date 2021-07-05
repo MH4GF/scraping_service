@@ -1,5 +1,6 @@
 vendor/**
-packaged-template.yaml
+.aws-sam/*
+*/.terraform
+packaged-template.yml
 secrets.yml
 .DS_Store
-*/.terraform
